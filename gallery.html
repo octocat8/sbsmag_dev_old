@@ -1,0 +1,140 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>SBSMAG | Section</title>
+        <link href="gallery.css" rel="stylesheet" type="text/css">
+        <link href="https://fonts.googleapis.com/css?family=Lato:400,900" rel="stylesheet"> 
+        <script defer src="Assets/fontawesome-all.js"></script>
+    </head>
+    <body>
+        <div id="navbar">
+            <a href="#" id="close" class="nav-top">
+                <i class="far fa-times-circle"></i>
+            </a>
+            <a href="#" id="news" class="nav-item">News</a>
+            <a href="#" id="sci"  class="nav-item">Science</a>
+            <a href="#" id="feat" class="nav-item">Features</a>
+            <a href="#" id="life" class="nav-item">Lifestyle</a>
+            <a href="#" id="spo"  class="nav-item">Sports</a>
+            <a href="#" id="soc"  class="nav-item">Society</a>
+            <a href="#" id="busi" class="nav-item">Business</a>
+            <a href="#" class="nav-item">Gallery</a>
+            <script>
+                var close_btn = document.getElementById("close");
+                close_btn.onclick = function() {
+                    document.getElementById("navbar").style.transform = "translateY(-100%)";
+                    document.getElementById("navbar").style.display = "none";
+                }
+            </script>
+        </div>
+        <div class="header">
+            <a href="index.html">
+                <img src="Assets/sbsmaglogo2.jpg">
+            </a>
+        </div>
+        <div id="main">
+            <a href="#navbar" id="open">
+                <i class="fas fa-bars"></i>
+            </a>
+            <script>
+                var open_btn = document.getElementById("open");
+                open_btn.onclick = function() {
+                    document.getElementById("navbar").style.transform = "translateY(0)";
+                    document.getElementById("navbar").style.display = "grid";
+                }
+            </script>
+            <div class="item">
+                <img src="Assets/samples/alberto-restifo-4510-unsplash.jpg" alt="">
+                <div class="item__overlay"><p>View</p></div>
+            </div>
+            <div class="item">
+                <img src="Assets/samples/ales-krivec-2050-unsplash.jpg" alt="">
+                <div class="item__overlay"><p>View</p></div>
+            </div>
+            <div class="item">
+                <img src="Assets/samples/anders-jilden-41692-unsplash.jpg" alt="">
+                <div class="item__overlay"><p>View</p></div>
+            </div>
+            <div class="item">
+                <img src="Assets/samples/cosmic-timetraveler-33673-unsplash.jpg" alt="">
+                <div class="item__overlay"><p>View</p></div>
+            </div>
+            <div class="item">
+                <img src="Assets/samples/jonatan-pie-234237-unsplash.jpg" alt="">
+                <div class="item__overlay"><p>View</p></div>
+            </div>
+            <div class="item">
+                <img src="Assets/samples/jonatan-pie-234237-unsplash.jpg" alt="">
+                <div class="item__overlay"><p>View</p></div>
+            </div>
+            <div class="item">
+                <img src="Assets/samples/patrick-lindenberg-191841-unsplash.jpg" alt="">
+                <div class="item__overlay"><p>View</p></div>
+            </div>
+            <div class="item">
+                <img src="Assets/samples/preston-pownell-16950-unsplash.jpg" alt="">
+                <div class="item__overlay"><p>View</p></div>
+            </div>
+            <div class="item">
+                <img src="Assets/samples/alberto-restifo-4510-unsplash.jpg" alt="">
+                <div class="item__overlay"><p>View</p></div>
+            </div>
+            <div class="item">
+                <img src="Assets/samples/ales-krivec-2050-unsplash.jpg" alt="">
+                <div class="item__overlay"><p>View</p></div>
+            </div>
+            <div class="item">
+                <img src="Assets/samples/anders-jilden-41692-unsplash.jpg" alt="">
+                <div class="item__overlay"><p>View</p></div>
+            </div>
+            <div class="item">
+                <img src="Assets/samples/cosmic-timetraveler-33673-unsplash.jpg" alt="">
+                <div class="item__overlay"><p>View</p></div>
+            </div>
+            <div class="item">
+                <img src="Assets/samples/jonatan-pie-234237-unsplash.jpg" alt="">
+                <div class="item__overlay"><p>View</p></div>
+            </div>
+            <div class="item">
+                <img src="Assets/samples/jonatan-pie-234237-unsplash.jpg" alt="">
+                <div class="item__overlay"><p>View</p></div>
+            </div>
+            <div class="item">
+                <img src="Assets/samples/patrick-lindenberg-191841-unsplash.jpg" alt="">
+                <div class="item__overlay"><p>View</p></div>
+            </div>
+            <div class="item">
+                <img src="Assets/samples/preston-pownell-16950-unsplash.jpg" alt="">
+                <div class="item__overlay"><p>View</p></div>
+            </div>
+            <script>
+                function random_number(lower,upper) {
+                    return Math.floor(Math.random() * (upper-lower) + lower);
+                }
+                var items = document.getElementsByClassName("item");
+                for(var i = 0; i < items.length; i++) {
+                    items[i].className = "item h"+random_number(2,4)+" w"+random_number(2,4);
+                }
+                var art_container = document.getElementById("main");
+                function generate_filler() {
+                    for(var j = 0; j < items.length; j++) {
+                        var fill = document.createElement("div");
+                        fill.className = "filler";
+                        fill.style.background = "rgb("+random_number(0,255)+","+random_number(0,255)+","+random_number(0,255)+")";
+                        art_container.appendChild(fill);
+                    }
+                }
+                generate_filler();
+            </script>
+        </div>
+        <br><br>
+        <footer>
+            <a href="index.html">
+                <img src="Assets/sbsmaglogo2.jpg">
+            </a>
+            <p>Step By Step School</p>
+            <p id="call">Are you interested in the SBSMAG? <br>Submit your articles to thesbsmag@gmail.com</p>
+        </footer>
+    </body>
+</html>
