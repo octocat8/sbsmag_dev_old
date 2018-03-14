@@ -15,27 +15,27 @@
 	$check_root = mysqli_query($conn,$sql_root);
 	$check_result = $check_root->fetch_object();
 	if($check_result->class == "root") {
-?>
-	<br><br>
-	<h1>ADD / DELETE USERS</h1>
-	<table>
+		?>
+		<br><br>
+		<h1>ADD / DELETE USERS</h1>
+		<table>
 		<tr>
-			<th>ID</th>
-			<th>Username</th>
-			<th>Class</th>
+		<th>ID</th>
+		<th>Username</th>
+		<th>Class</th>
 		</tr>
-<?php
-		$user_get_sql = "SELECT * FROM users ORDER BY id";
-		$user_get_exec = mysqli_query($conn, $user_get_sql);
-		$user_show_rows = mysqli_fetch_array($user_get_exec, MYSQLI_ASSOC);
-?>
+		<?php
+			$user_get_sql = "SELECT * FROM users ORDER BY id";
+			$user_get_exec = mysqli_query($conn, $user_get_sql);
+			$user_show_rows = mysqli_fetch_array($user_get_exec, MYSQLI_ASSOC);
+		?>
 		<tr>
-			<td><?php echo $user_show_rows['id'];?></td>
-			<td><?php echo $user_show_rows['username'];?></td>
-			<td><?php echo $user_show_rows['class'];?></td>
+		<td><?php echo $user_show_rows['id'];?></td>
+		<td><?php echo $user_show_rows['username'];?></td>
+		<td><?php echo $user_show_rows['class'];?></td>
 		</tr>	
-<?php
-		echo "</table><a href='../register.php?authorised'>Add new user</a>";
+		<?php
+			echo "</table><a href='../register.php?authorised'>Add new user</a>";
 	}
 ?>
 
@@ -46,10 +46,20 @@
 	$check_edit = mysqli_query($conn,$sql_edit);
 	$check_edit = $check_edit->fetch_object();
 	if($check_edit->class == "root" || $check_edit->class == "editor") {
-?>
-	<br><br>
-	<h1>ADD / DELETE/ EDIT ARTICLES</h1>
-	<form method="post" action="" enctype="multipart/formdata">
+		if(isset($_POST['article_submit'])) {
+			$file_to_upload = $_FILES["file_upload"];
+			$title = mysqli_real_escape_string($conn, $_POST['title']);
+			$auth_name = mysqli_real_escape_string($conn, $_POST['auth_name']);
+			$auth_class = mysqli_real_escape_string($conn, $_POST['auth_class']);
+			$date_added = mysqli_real_escape_string($conn, $_POST['date_added']);
+			$content = mysqli_real_escape_string($conn, $_POST['content']);
+			$section = mysqli_real_escape_string($conn, $_POST['section']);
+			echo $file_to_upload;
+		}
+		?>
+		<br><br>
+		<h1>ADD / DELETE/ EDIT ARTICLES</h1>
+		<form method="post" action="" enctype="multipart/form-data">
 		<label>Article Title: </label>
 		<input type="text" name="title" required><br>
 		<label>Author Name: </label>
@@ -63,37 +73,37 @@
 		<label>Section: </label>
 		<input type="text" name="section" required><br>
 		<label>Image Path: </label>
-		<input type="file" name="image"><br>
-		<input type="submit" name="submit" value="Add Article"><br>
-	</form>
-	<table>
+		<input type="file" name="file_upload"><br>
+		<input type="submit" name="article_submit" value="Add Article"><br>
+		</form>
+		<table>
 		<tr>
-			<th>ID</th>
-			<th>TITLE</th>
-			<th>AUTHOR</th>
-			<th>AUTHOR CLASS</th>
-			<th>DATE ADDED</th>
-			<th>SECTION</th>
-			<th>IMAGE PATH</th>
-			<th>EDIT/DELETE</th>
+		<th>ID</th>
+		<th>TITLE</th>
+		<th>AUTHOR</th>
+		<th>AUTHOR CLASS</th>
+		<th>DATE ADDED</th>
+		<th>SECTION</th>
+		<th>IMAGE PATH</th>
+		<th>EDIT/DELETE</th>
 		</tr>
-<?php
-		$user_get_sql = "SELECT * FROM articles ORDER BY id DESC";
-		$user_get_exec = mysqli_query($conn, $user_get_sql);
-		$user_show_rows = mysqli_fetch_array($user_get_exec, MYSQLI_ASSOC);
-?>
+		<?php
+			$user_get_sql = "SELECT * FROM articles ORDER BY id DESC";
+			$user_get_exec = mysqli_query($conn, $user_get_sql);
+			$user_show_rows = mysqli_fetch_array($user_get_exec, MYSQLI_ASSOC);
+		?>
 		<tr>
-			<td><?php echo $user_show_rows['id'];?></td>
-			<td><?php echo $user_show_rows['article_title'];?></td>
-			<td><?php echo $user_show_rows['author'];?></td>
-			<td><?php echo $user_show_rows['author_class'];?></td>
-			<td><?php echo $user_show_rows['date_added'];?></td>
-			<td><?php echo $user_show_rows['section'];?></td>
-			<td><?php echo $user_show_rows['image_path'];?></td>
-			<td><?php echo "<a href='index.php?article_id=".$user_show_rows['id']."'"?></td>
+		<td><?php echo $user_show_rows['id'];?></td>
+		<td><?php echo $user_show_rows['article_title'];?></td>
+		<td><?php echo $user_show_rows['author'];?></td>
+		<td><?php echo $user_show_rows['author_class'];?></td>
+		<td><?php echo $user_show_rows['date_added'];?></td>
+		<td><?php echo $user_show_rows['section'];?></td>
+		<td><?php echo $user_show_rows['image_path'];?></td>
+		<td><?php echo "<a href='index.php?article_id=".$user_show_rows['id']."'"?></td>
 		</tr>	
-<?php
-		echo "</table><a href='../register.php?authorised'>Add new user</a>";
+		<?php
+			echo "</table><a href='../register.php?authorised'>Add new user</a>";
 	}
 ?>
 
