@@ -19,5 +19,8 @@
 	<input type="password" name="password" required><br>
 	<label>REPEAT PASSWORD</label>
 	<input type="password" name="password_repeat" required><br>
+	<label>CLASS</label>
+	<input type="text" name="user_class" required><br>
+
 	<input type="submit" name="register" value="Register">
 </form>

@@ -13,6 +13,8 @@ class Registration {
     {
         if (empty($_POST['username'])) {
             $this->errors[] = "Empty Username";
+        } elseif (empty($_POST['user_class'])) {
+            $this->errors[] = "Empty Class";
         } elseif (empty($_POST['password']) || empty($_POST['password_repeat'])) {
             $this->errors[] = "Empty Password";
         } elseif ($_POST['password'] !== $_POST['password_repeat']) {
@@ -27,6 +29,7 @@ class Registration {
             && strlen($_POST['username']) <= 64
             && strlen($_POST['username']) >= 2
             && preg_match('/^[a-z\d]{2,64}$/i', $_POST['username'])
+            && !empty($_POST['user_class'])
             && !empty($_POST['password'])
             && !empty($_POST['password_repeat'])
             && ($_POST['password'] === $_POST['password_repeat'])
@@ -34,6 +37,7 @@ class Registration {
             $this->db_connection = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
             if (!$this->db_connection->connect_errno) {
                 $username = $this->db_connection->real_escape_string(strip_tags($_POST['username'], ENT_QUOTES));
+                $user_class = $this->db_connection->real_escape_string(strip_tags($_POST['user_class'], ENT_QUOTES));
                 $password = $_POST['password'];
                 // crypt the user's password with PHP 5.5's password_hash() function, results in a 60 character
                 // hash string. the PASSWORD_DEFAULT constant is defined by the PHP 5.5, or if you are using
@@ -47,8 +51,8 @@ class Registration {
                     $this->errors[] = "Sorry, that username is already taken.";
                 } else {
                     // write new user's data into database
-                    $sql = "INSERT INTO users (username, password)
-                            VALUES('" . $username . "', '" . $password_hash . "');";
+                    $sql = "INSERT INTO users (username, password, class)
+                            VALUES('" . $username . "', '" . $password_hash . "', '". $user_class."');";
                     $query_new_user_insert = $this->db_connection->query($sql);
 
                     // if user has been added successfully
