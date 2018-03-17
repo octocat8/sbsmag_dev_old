@@ -47,6 +47,24 @@
 	$check_edit = mysqli_query($conn,$sql_edit);
 	$check_edit = $check_edit->fetch_object();
 	if($check_edit->class == "root" || $check_edit->class == "editor") {
+		$titleval = $auth_name_val = $auth_class_val = $date_added_val = $content_val = $section_val = $image_val =  "";
+		$btn_val = "Add Article";
+		$btn_name = "article_submit";
+		if (isset($_GET["article_id"])) {
+			$idval = $_GET["article_id"];
+			$getforedit = "SELECT * FROM articles WHERE id = '$idval'";
+			$queryforedit = mysqli_query($conn, $getforedit);
+			$showforedit = mysqli_fetch_array($queryforedit, MYSQLI_ASSOC);
+			$titleval = $showforedit["article_title"];
+			$auth_name_val = $showforedit["author_name"];
+			$auth_class_val = $showforedit["author_class"];
+			$date_added_val = $showforedit["date_added"];
+			$content_val = $showforedit["content"];
+			$section_val = $showforedit["section"];
+			$image_val = $showforedit["image_path"];
+			$btn_val = "Edit Article";
+			$btn_name = "article_edit";
+		}
 		if(isset($_POST['article_submit']) && $_FILES["file_upload"]["error"] == 0) {
 			$file_to_upload = $_FILES["file_upload"];
 			$title = mysqli_real_escape_string($conn, $_POST['title']);
@@ -83,25 +101,60 @@
 			} else {
 				echo "Unable to upload article";
 			}
+		} elseif(isset($_POST['article_edit'])) {
+			$title = mysqli_real_escape_string($conn, $_POST['title']);
+			$auth_name = mysqli_real_escape_string($conn, $_POST['auth_name']);
+			$auth_class = mysqli_real_escape_string($conn, $_POST['auth_class']);
+			$date_added = mysqli_real_escape_string($conn, $_POST['date_added']);
+			$content = mysqli_real_escape_string($conn, $_POST['content']);
+			$section = mysqli_real_escape_string($conn, $_POST['section']);
+			$file_name = mysqli_real_escape_string($conn, $_POST["file_upload"]);
+			$sql_edit_article = "UPDATE articles SET
+			article_title = '$title',
+			author_name = '$auth_name',
+			author_class = '$auth_class',
+			date_added = '$date_added',
+			content = '$content',
+			section = '$section',
+			image_path = '$file_name' WHERE id = '$idval';";
+			$query_edit_article = mysqli_query($conn, $sql_edit_article);
+			if($query_edit_article) {
+				echo "Article Edited";
+			} else {
+				echo "Unable to edit article";
+			}
+		} elseif(isset($_POST['article_delete'])) {
+			$sql_del_article = "DELETE FROM articles WHERE id = '$idval';";
+			$query_del_article = mysqli_query($conn, $sql_del_article);
+			if($query_del_article) {
+				echo "Article Edited";
+			} else {
+				echo "Unable to edit article";
+			}
 		}
 		?>
 		<h1>ADD / DELETE/ EDIT ARTICLES</h1>
 		<form method="post" action="" enctype="multipart/form-data">
 		<label>Article Title: </label>
-		<input type="text" name="title" value="" required><br>
+		<input type="text" name="title" <?php echo "value = '$titleval'"; ?> required><br>
 		<label>Author Name: </label>
-		<input type="text" name="auth_name" value="" required><br>
+		<input type="text" name="auth_name" <?php echo "value = '$auth_name_val'"; ?> required><br>
 		<label>Author Class: </label>
-		<input type="text" name="auth_class" value="" required><br>
+		<input type="text" name="auth_class" <?php echo "value = '$auth_class_val'"; ?> required><br>
 		<label>Date Added: </label>
-		<input type="text" name="date_added" value="" required><br>
+		<input type="text" name="date_added" <?php echo "value = '$date_added_val'"; ?> required><br>
 		<label>Content: </label>
-		<textarea name="content" value="" required></textarea><br>
+		<textarea name="content" required><?php echo $content_val; ?></textarea><br>
 		<label>Section: </label>
-		<input type="text" name="section" value="" required><br>
+		<input type="text" name="section" <?php echo "value = '$section_val'"; ?> required><br>
 		<label>Image Path: </label>
-		<input type="file" name="file_upload"><br>
-		<input type="submit" name="article_submit" value="Add Article"><br>
+		<?php if (isset($_GET["article_id"])){ ?>
+			<input type="text" name="file_upload" <?php echo "value = '$image_val'"; ?>><br>
+			<input type="submit" value="Delete Article" name="article_delete">
+		<?php } else { ?>
+			<input type="file" name="file_upload"><br>
+		<?php } ?>
+		<input type="submit" <?php echo "value = '$btn_val' name='$btn_name'"; ?>><br>
 		</form>
 		<table>
 		<tr>
