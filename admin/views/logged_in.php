@@ -61,15 +61,24 @@
 			if($query_add_article) {
 				echo "Article added to database, moving image file.";
 				$target_dir = "uploads/";
-				$target_file = $target_dir . basename($file_to_upload["name"]);
 				$file_size = $file_to_upload["size"];
 				$file_type = explode(".", $file_name);
 				$file_ext = $file_type[1];
 				$allowed = array("png","jpg","jpeg","gif","svg");
 				if (in_array($file_ext, $allowed)) {
 					if($file_size < 10000000) {
-						if(move_uploaded_file($file_to_upload["tmp_name"]. $target_file))
+						if(move_uploaded_file($file_to_upload["tmp_name"], SITE_ROOT.$target_dir.$file_to_upload["name"])) {
+							echo "File Successfully Moved. Congratulations.";
+							delay(1000);
+							header("index.php");
+						} else {
+							echo "Failure to move file. ";
+						}
+					} else {
+						echo "File Size > 10MB not allowed";
 					}
+				} else {
+					echo "You cant upload a file with that extension";
 				}
 			} else {
 				echo "Unable to upload article";
