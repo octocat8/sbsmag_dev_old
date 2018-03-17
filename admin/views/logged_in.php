@@ -186,3 +186,118 @@
 			}
 	}
 ?>
+<br><br>
+<?php
+	#SEGMENT TO ADD/EDIT/DELETE NEW PHOTOGRAPHS
+	#ACCESSIBLE TO ONLY THOSE USERS WITH A CLASS OF ROOT/ PHOTOGRAPHER
+	$sql_edit = "SELECT class FROM users WHERE username = '" . $username . "';";
+	$check_edit = mysqli_query($conn,$sql_edit);
+	$check_edit = $check_edit->fetch_object();
+	if($check_edit->class == "root" || $check_edit->class == "photographer") {
+		$titleval = $photographer_name_val = $photographer_class_val = $date_added_val = $image_val =  "";
+		$btn_val = "Add Image";
+		$btn_name = "image_submit";
+		if (isset($_GET["image_id"])) {
+			$idval = $_GET["image_id"];
+			$getfordel = "SELECT * FROM images WHERE id = '$idval'";
+			$queryfordel = mysqli_query($conn, $getfordel);
+			$showfordel = mysqli_fetch_array($queryfordel, MYSQLI_ASSOC);
+			$titleval = $showforedit["image_title"];
+			$photographer_name_val = $showforedit["photographer_name"];
+			$photographer_class_val = $showforedit["photographer_class"];
+			$date_added_val = $showforedit["date_added"];
+			$image_val = $showforedit["image_path"];
+			$btn_val = "Delete Image";
+			$btn_name = "image_delete";
+		}
+		if(isset($_POST['image_submit']) && $_FILES["file_upload"]["error"] == 0) {
+			$file_to_upload = $_FILES["file_upload"];
+			$title = mysqli_real_escape_string($conn, $_POST['title']);
+			$photographer_name = mysqli_real_escape_string($conn, $_POST['photographer_name']);
+			$photographer_class = mysqli_real_escape_string($conn, $_POST['photographer_class']);
+			$date_added = mysqli_real_escape_string($conn, $_POST['date_added']);
+			$file_name = mysqli_real_escape_string($conn, $file_to_upload["name"]);
+			$sql_add_image = "INSERT INTO
+			images(image_title, photographer_name, photographer_class, date_added, image_path) VALUES ('".$title."','".$photographer_name."','".$photographer_class."','".$date_added."','".$file_name."');";
+			$query_add_image = mysqli_query($conn, $sql_add_image);
+			if($query_add_image) {
+				echo "Image added to database, moving image file.";
+				$target_dir = "uploads/";
+				$file_size = $file_to_upload["size"];
+				$file_type = explode(".", $file_name);
+				$file_ext = $file_type[1];
+				$allowed = array("png","jpg","jpeg","gif","svg");
+				if (in_array($file_ext, $allowed)) {
+					if($file_size < 10000000) {
+						if(move_uploaded_file($file_to_upload["tmp_name"], SITE_ROOT.$target_dir.$file_to_upload["name"])) {
+							echo "File Successfully Moved. Congratulations.";
+							header("index.php");
+						} else {
+							echo "Failure to move file. ";
+						}
+					} else {
+						echo "File Size > 10MB not allowed";
+					}
+				} else {
+					echo "You cant upload a file with that extension";
+				}
+			} else {
+				echo "Unable to upload image";
+			}
+		} elseif(isset($_POST['image_delete'])) {
+			$sql_del_image = "DELETE FROM images WHERE id = '$idval';";
+			$query_del_image = mysqli_query($conn, $sql_del_image);
+			if($query_del_image) {
+				echo "Image Edited";
+			} else {
+				echo "Unable to edit image";
+			}
+		}
+		?>
+		<h1>ADD / DELETE PHOTOGRAPHS</h1>
+		<form method="post" action="" enctype="multipart/form-data">
+		<label>Photograph Title: </label>
+		<input type="text" name="title" <?php echo "value = '$titleval'"; ?>><br>
+		<label>Photographer Name: </label>
+		<input type="text" name="photographer_name" <?php echo "value = '$photographer_name_val'"; ?> required><br>
+		<label>Photographer Class: </label>
+		<input type="text" name="photographer_class" <?php echo "value = '$photographer_class_val'"; ?> required><br>
+		<label>Date Added: </label>
+		<input type="text" name="date_added" <?php echo "value = '$date_added_val'"; ?> required><br>
+		<label>Image Path: </label>
+		<?php if (isset($_GET["image_id"])){ ?>
+			<input type="text" name="file_upload" <?php echo "value = '$image_val'"; ?>><br>
+		<?php } else { ?>
+			<input type="file" name="file_upload"><br>
+		<?php } ?>
+		<input type="submit" <?php echo "value = '$btn_val' name='$btn_name'"; ?>><br>
+		</form>
+		<table>
+		<tr>
+		<th>ID</th>
+		<th>TITLE</th>
+		<th>PHOTOGRAPHER</th>
+		<th>PHOTOGRAPHER CLASS</th>
+		<th>DATE ADDED</th>
+		<th>SECTION</th>
+		<th>IMAGE PATH</th>
+		<th>EDIT/DELETE</th>
+		</tr>
+		<?php
+			$user_get_sql = "SELECT * FROM `images` ORDER BY id DESC LIMIT 15";
+			$user_get_exec = mysqli_query($conn, $user_get_sql);
+			while($user_show_rows = mysqli_fetch_array($user_get_exec, MYSQLI_ASSOC)) {
+		?>
+				<tr>
+				<td><?php echo $user_show_rows['id'];?></td>
+				<td><?php echo $user_show_rows['image_title'];?></td>
+				<td><?php echo $user_show_rows['photographer_name'];?></td>
+				<td><?php echo $user_show_rows['photographer_class'];?></td>
+				<td><?php echo $user_show_rows['date_added'];?></td>
+				<td><?php echo $user_show_rows['image_path'];?></td>
+				<td><?php echo "<a href='index.php?image_id=".$user_show_rows['id']."'> EDIT/DELETE</a>";?></td>
+				</tr>
+				<?php
+			}
+	}
+?>
