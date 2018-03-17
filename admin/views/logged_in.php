@@ -27,15 +27,16 @@
 		<?php
 			$user_get_sql = "SELECT * FROM users ORDER BY id";
 			$user_get_exec = mysqli_query($conn, $user_get_sql);
-			$user_show_rows = mysqli_fetch_array($user_get_exec, MYSQLI_ASSOC);
-		?>
-		<tr>
-		<td><?php echo $user_show_rows['id'];?></td>
-		<td><?php echo $user_show_rows['username'];?></td>
-		<td><?php echo $user_show_rows['class'];?></td>
-		</tr>
-		<?php
-			echo "</table><a href='../register.php?authorised'>Add new user</a>";
+			while($user_show_rows = mysqli_fetch_array($user_get_exec, MYSQLI_ASSOC)) {
+				?>
+				<tr>
+				<td><?php echo $user_show_rows['id'];?></td>
+				<td><?php echo $user_show_rows['username'];?></td>
+				<td><?php echo $user_show_rows['class'];?></td>
+				</tr>
+				<?php
+			}
+			echo "</table><a href='register.php?authorised'>Add new user</a>";
 	}
 ?>
 <br><br>
@@ -69,7 +70,6 @@
 					if($file_size < 10000000) {
 						if(move_uploaded_file($file_to_upload["tmp_name"], SITE_ROOT.$target_dir.$file_to_upload["name"])) {
 							echo "File Successfully Moved. Congratulations.";
-							delay(1000);
 							header("index.php");
 						} else {
 							echo "Failure to move file. ";
@@ -115,7 +115,7 @@
 		<th>EDIT/DELETE</th>
 		</tr>
 		<?php
-			$user_get_sql = "SELECT * FROM `articles` ORDER BY id DESC";
+			$user_get_sql = "SELECT * FROM `articles` ORDER BY id DESC LIMIT 15";
 			$user_get_exec = mysqli_query($conn, $user_get_sql);
 			while($user_show_rows = mysqli_fetch_array($user_get_exec, MYSQLI_ASSOC)) {
 		?>
@@ -131,6 +131,5 @@
 				</tr>
 				<?php
 			}
-			echo "</table><a href='../register.php?authorised'>Add new user</a>";
 	}
 ?>
