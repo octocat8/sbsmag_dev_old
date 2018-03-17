@@ -1,4 +1,4 @@
-<?php 
+<?php
 	$conn = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
 	if(!$conn) {
 		echo "cannot get a lock on host";
@@ -8,7 +8,7 @@
 ?>
 <br>
 <a href="index.php?logout">Logout</a>
-<?php 
+<?php
 	#SEGMENT TO ADD NEW USERS
 	#ACCESSIBLE TO ONLY THOSE USERS WITH A CLASS OF ROOT
 	$sql_root = "SELECT class FROM users WHERE username = '" . $username . "';";
@@ -33,20 +33,20 @@
 		<td><?php echo $user_show_rows['id'];?></td>
 		<td><?php echo $user_show_rows['username'];?></td>
 		<td><?php echo $user_show_rows['class'];?></td>
-		</tr>	
+		</tr>
 		<?php
 			echo "</table><a href='../register.php?authorised'>Add new user</a>";
 	}
 ?>
-
-<?php 
+<br><br>
+<?php
 	#SEGMENT TO ADD/EDIT/DELETE NEW ARTICLES
 	#ACCESSIBLE TO ONLY THOSE USERS WITH A CLASS OF ROOT/ EDITOR
 	$sql_edit = "SELECT class FROM users WHERE username = '" . $username . "';";
 	$check_edit = mysqli_query($conn,$sql_edit);
 	$check_edit = $check_edit->fetch_object();
 	if($check_edit->class == "root" || $check_edit->class == "editor") {
-		if(isset($_POST['article_submit'])) {
+		if(isset($_POST['article_submit']) && $_FILES["file_upload"]["error"] == 0) {
 			$file_to_upload = $_FILES["file_upload"];
 			$title = mysqli_real_escape_string($conn, $_POST['title']);
 			$auth_name = mysqli_real_escape_string($conn, $_POST['auth_name']);
@@ -54,24 +54,42 @@
 			$date_added = mysqli_real_escape_string($conn, $_POST['date_added']);
 			$content = mysqli_real_escape_string($conn, $_POST['content']);
 			$section = mysqli_real_escape_string($conn, $_POST['section']);
-			echo $file_to_upload;
+			$file_name = mysqli_real_escape_string($conn, $file_to_upload["name"]);
+			$sql_add_article = "INSERT INTO
+			articles(article_title, author_name, author_class, date_added, content, section, image_path) VALUES ('".$title."','".$auth_name."','".$auth_class."','".$date_added."','".$content."','".$section."','".$file_name."');";
+			$query_add_article = mysqli_query($conn, $sql_add_article);
+			if($query_add_article) {
+				echo "Article added to database, moving image file.";
+				$target_dir = "uploads/";
+				$target_file = $target_dir . basename($file_to_upload["name"]);
+				$file_size = $file_to_upload["size"];
+				$file_type = explode(".", $file_name);
+				$file_ext = $file_type[1];
+				$allowed = array("png","jpg","jpeg","gif","svg");
+				if (in_array($file_ext, $allowed)) {
+					if($file_size < 10000000) {
+						if(move_uploaded_file($file_to_upload["tmp_name"]. $target_file))
+					}
+				}
+			} else {
+				echo "Unable to upload article";
+			}
 		}
 		?>
-		<br><br>
 		<h1>ADD / DELETE/ EDIT ARTICLES</h1>
 		<form method="post" action="" enctype="multipart/form-data">
 		<label>Article Title: </label>
-		<input type="text" name="title" required><br>
+		<input type="text" name="title" value="" required><br>
 		<label>Author Name: </label>
-		<input type="text" name="auth_name" required><br>
+		<input type="text" name="auth_name" value="" required><br>
 		<label>Author Class: </label>
-		<input type="text" name="auth_class" required><br>
+		<input type="text" name="auth_class" value="" required><br>
 		<label>Date Added: </label>
-		<input type="text" name="date_added" required><br>
+		<input type="text" name="date_added" value="" required><br>
 		<label>Content: </label>
-		<textarea name="content" required></textarea><br>
+		<textarea name="content" value="" required></textarea><br>
 		<label>Section: </label>
-		<input type="text" name="section" required><br>
+		<input type="text" name="section" value="" required><br>
 		<label>Image Path: </label>
 		<input type="file" name="file_upload"><br>
 		<input type="submit" name="article_submit" value="Add Article"><br>
@@ -88,22 +106,22 @@
 		<th>EDIT/DELETE</th>
 		</tr>
 		<?php
-			$user_get_sql = "SELECT * FROM articles ORDER BY id DESC";
+			$user_get_sql = "SELECT * FROM `articles` ORDER BY id DESC";
 			$user_get_exec = mysqli_query($conn, $user_get_sql);
-			$user_show_rows = mysqli_fetch_array($user_get_exec, MYSQLI_ASSOC);
+			while($user_show_rows = mysqli_fetch_array($user_get_exec, MYSQLI_ASSOC)) {
 		?>
-		<tr>
-		<td><?php echo $user_show_rows['id'];?></td>
-		<td><?php echo $user_show_rows['article_title'];?></td>
-		<td><?php echo $user_show_rows['author'];?></td>
-		<td><?php echo $user_show_rows['author_class'];?></td>
-		<td><?php echo $user_show_rows['date_added'];?></td>
-		<td><?php echo $user_show_rows['section'];?></td>
-		<td><?php echo $user_show_rows['image_path'];?></td>
-		<td><?php echo "<a href='index.php?article_id=".$user_show_rows['id']."'"?></td>
-		</tr>	
-		<?php
+				<tr>
+				<td><?php echo $user_show_rows['id'];?></td>
+				<td><?php echo $user_show_rows['article_title'];?></td>
+				<td><?php echo $user_show_rows['author_name'];?></td>
+				<td><?php echo $user_show_rows['author_class'];?></td>
+				<td><?php echo $user_show_rows['date_added'];?></td>
+				<td><?php echo $user_show_rows['section'];?></td>
+				<td><?php echo $user_show_rows['image_path'];?></td>
+				<td><?php echo "<a href='index.php?article_id=".$user_show_rows['id']."'> EDIT/DELETE</a>";?></td>
+				</tr>
+				<?php
+			}
 			echo "</table><a href='../register.php?authorised'>Add new user</a>";
 	}
 ?>
-
