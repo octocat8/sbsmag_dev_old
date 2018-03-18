@@ -83,19 +83,23 @@
 				$file_type = explode(".", $file_name);
 				$file_ext = $file_type[1];
 				$allowed = array("png","jpg","jpeg","gif","svg");
-				if (in_array($file_ext, $allowed)) {
-					if($file_size < 10000000) {
-						if(move_uploaded_file($file_to_upload["tmp_name"], SITE_ROOT.$target_dir.$file_to_upload["name"])) {
-							echo "File Successfully Moved. Congratulations.";
-							header("index.php");
+				if (!file_exists(SITE_ROOT.$target_dir.$file_to_upload["name"])) {
+					if (in_array($file_ext, $allowed)) {
+						if($file_size < 10000000) {
+							if(move_uploaded_file($file_to_upload["tmp_name"], SITE_ROOT.$target_dir.$file_to_upload["name"])) {
+								echo "File Successfully Moved. Congratulations.";
+								header("index.php");
+							} else {
+								echo "Failure to move file. ";
+							}
 						} else {
-							echo "Failure to move file. ";
+							echo "File Size > 10MB not allowed";
 						}
 					} else {
-						echo "File Size > 10MB not allowed";
+						echo "You cant upload a file with that extension";
 					}
 				} else {
-					echo "You cant upload a file with that extension";
+					echo "The file already exists. You might want to add a duplicate article with a different image name, and delete this copy";
 				}
 			} else {
 				echo "Unable to upload article";
@@ -157,33 +161,34 @@
 		<input type="submit" <?php echo "value = '$btn_val' name='$btn_name'"; ?>><br>
 		</form>
 		<table>
-		<tr>
-		<th>ID</th>
-		<th>TITLE</th>
-		<th>AUTHOR</th>
-		<th>AUTHOR CLASS</th>
-		<th>DATE ADDED</th>
-		<th>SECTION</th>
-		<th>IMAGE PATH</th>
-		<th>EDIT/DELETE</th>
-		</tr>
-		<?php
-			$user_get_sql = "SELECT * FROM `articles` ORDER BY id DESC LIMIT 15";
-			$user_get_exec = mysqli_query($conn, $user_get_sql);
-			while($user_show_rows = mysqli_fetch_array($user_get_exec, MYSQLI_ASSOC)) {
-		?>
-				<tr>
-				<td><?php echo $user_show_rows['id'];?></td>
-				<td><?php echo $user_show_rows['article_title'];?></td>
-				<td><?php echo $user_show_rows['author_name'];?></td>
-				<td><?php echo $user_show_rows['author_class'];?></td>
-				<td><?php echo $user_show_rows['date_added'];?></td>
-				<td><?php echo $user_show_rows['section'];?></td>
-				<td><?php echo $user_show_rows['image_path'];?></td>
-				<td><?php echo "<a href='index.php?article_id=".$user_show_rows['id']."'> EDIT/DELETE</a>";?></td>
-				</tr>
-				<?php
-			}
+			<tr>
+			<th>ID</th>
+			<th>TITLE</th>
+			<th>AUTHOR</th>
+			<th>AUTHOR CLASS</th>
+			<th>DATE ADDED</th>
+			<th>SECTION</th>
+			<th>IMAGE PATH</th>
+			<th>EDIT/DELETE</th>
+			</tr>
+			<?php
+				$user_get_sql = "SELECT * FROM `articles` ORDER BY id DESC LIMIT 15";
+				$user_get_exec = mysqli_query($conn, $user_get_sql);
+				while($user_show_rows = mysqli_fetch_array($user_get_exec, MYSQLI_ASSOC)) {
+			?>
+					<tr>
+					<td><?php echo $user_show_rows['id'];?></td>
+					<td><?php echo $user_show_rows['article_title'];?></td>
+					<td><?php echo $user_show_rows['author_name'];?></td>
+					<td><?php echo $user_show_rows['author_class'];?></td>
+					<td><?php echo $user_show_rows['date_added'];?></td>
+					<td><?php echo $user_show_rows['section'];?></td>
+					<td><?php echo $user_show_rows['image_path'];?></td>
+					<td><?php echo "<a href='index.php?article_id=".$user_show_rows['id']."'> EDIT/DELETE</a>";?></td>
+					</tr>
+					<?php
+				}
+		?> </table><?php
 	}
 ?>
 <?php
@@ -224,19 +229,23 @@
 				$file_type = explode(".", $file_name);
 				$file_ext = $file_type[1];
 				$allowed = array("png","jpg","jpeg","gif","svg");
-				if (in_array($file_ext, $allowed)) {
-					if($file_size < 10000000) {
-						if(move_uploaded_file($file_to_upload["tmp_name"], SITE_ROOT.$target_dir.$file_to_upload["name"])) {
-							echo "File Successfully Moved. Congratulations.";
-							header("index.php");
+				if (!file_exists(SITE_ROOT.$target_dir.$file_to_upload["name"])) {
+					if (in_array($file_ext, $allowed)) {
+						if($file_size < 10000000) {
+							if(move_uploaded_file($file_to_upload["tmp_name"], SITE_ROOT.$target_dir.$file_to_upload["name"])) {
+								echo "File Successfully Moved. Congratulations.";
+								header("index.php");
+							} else {
+								echo "Failure to move file. ";
+							}
 						} else {
-							echo "Failure to move file. ";
+							echo "File Size > 10MB not allowed";
 						}
 					} else {
-						echo "File Size > 10MB not allowed";
+						echo "You cant upload a file with that extension";
 					}
 				} else {
-					echo "You cant upload a file with that extension";
+					echo "The file already exists. You might want to add a duplicate photograph with a different image name, and delete this copy";
 				}
 			} else {
 				echo "Unable to upload image";
@@ -269,29 +278,30 @@
 		<input type="submit" <?php echo "value = '$btn_val' name='$btn_name'"; ?>><br>
 		</form>
 		<table>
-		<tr>
-		<th>ID</th>
-		<th>PHOTOGRAPHER</th>
-		<th>PHOTOGRAPHER CLASS</th>
-		<th>DATE ADDED</th>
-		<th>IMAGE PATH</th>
-		<th>EDIT/DELETE</th>
-		</tr>
-		<?php
-			$user_get_sql = "SELECT * FROM `images` ORDER BY id DESC LIMIT 15";
-			$user_get_exec = mysqli_query($conn, $user_get_sql);
-			while($user_show_rows = mysqli_fetch_array($user_get_exec, MYSQLI_ASSOC)) {
-		?>
-				<tr>
-				<td><?php echo $user_show_rows['id'];?></td>
-				<td><?php echo $user_show_rows['photographer_name'];?></td>
-				<td><?php echo $user_show_rows['photographer_class'];?></td>
-				<td><?php echo $user_show_rows['date_added'];?></td>
-				<td><?php echo $user_show_rows['image_path'];?></td>
-				<td><?php echo "<a href='index.php?image_id=".$user_show_rows['id']."'> EDIT/DELETE</a>";?></td>
-				</tr>
-				<?php
-			}
+			<tr>
+			<th>ID</th>
+			<th>PHOTOGRAPHER</th>
+			<th>PHOTOGRAPHER CLASS</th>
+			<th>DATE ADDED</th>
+			<th>IMAGE PATH</th>
+			<th>EDIT/DELETE</th>
+			</tr>
+			<?php
+				$user_get_sql = "SELECT * FROM `images` ORDER BY id DESC LIMIT 15";
+				$user_get_exec = mysqli_query($conn, $user_get_sql);
+				while($user_show_rows = mysqli_fetch_array($user_get_exec, MYSQLI_ASSOC)) {
+			?>
+					<tr>
+					<td><?php echo $user_show_rows['id'];?></td>
+					<td><?php echo $user_show_rows['photographer_name'];?></td>
+					<td><?php echo $user_show_rows['photographer_class'];?></td>
+					<td><?php echo $user_show_rows['date_added'];?></td>
+					<td><?php echo $user_show_rows['image_path'];?></td>
+					<td><?php echo "<a href='index.php?image_id=".$user_show_rows['id']."'> EDIT/DELETE</a>";?></td>
+					</tr>
+					<?php
+				}?>
+		</table> <?php
 	}
 ?>
 <?php
@@ -352,23 +362,22 @@
 		<input type="submit" <?php echo "value = '$btn_val' name='$btn_name'"; ?>><br>
 		</form>
 		<table>
-		<tr>
-		<th>ID</th>
-		<th>ANNOUNCEMENT</th>
-		<th>EDIT/DELETE</th>
-		</tr>
-		<?php
-			$user_get_sql = "SELECT * FROM `announcements` ORDER BY id DESC LIMIT 15";
-			$user_get_exec = mysqli_query($conn, $user_get_sql);
-			while($user_show_rows = mysqli_fetch_array($user_get_exec, MYSQLI_ASSOC)) {
-		?>
-				<tr>
-				<td><?php echo $user_show_rows['id'];?></td>
-				<td><?php echo $user_show_rows['announcement'];?></td>
-				<td><?php echo "<a href='index.php?announcement_id=".$user_show_rows['id']."'> EDIT/DELETE</a>";?></td>
-				</tr>
-				<?php
-			}
+			<tr>
+			<th>ID</th>
+			<th>ANNOUNCEMENT</th>
+			<th>EDIT/DELETE</th>
+			</tr>
+			<?php
+				$user_get_sql = "SELECT * FROM `announcements` ORDER BY id DESC LIMIT 15";
+				$user_get_exec = mysqli_query($conn, $user_get_sql);
+				while($user_show_rows = mysqli_fetch_array($user_get_exec, MYSQLI_ASSOC)) { ?>
+			<tr>
+			<td><?php echo $user_show_rows['id'];?></td>
+			<td><?php echo $user_show_rows['announcement'];?></td>
+			<td><?php echo "<a href='index.php?announcement_id=".$user_show_rows['id']."'> EDIT/DELETE</a>";?></td>
+			</tr>
+				<?php } ?>
+		</table><?php
 	}
 ?>
 <?php
@@ -434,24 +443,25 @@
 		<input type="submit" <?php echo "value = '$btn_val' name='$btn_name'"; ?>><br>
 		</form>
 		<table>
-		<tr>
-		<th>ID</th>
-		<th>EVENT</th>
-		<th>DATE</th>
-		<th>EDIT/DELETE</th>
-		</tr>
-		<?php
-			$user_get_sql = "SELECT * FROM `events` ORDER BY id DESC LIMIT 15";
-			$user_get_exec = mysqli_query($conn, $user_get_sql);
-			while($user_show_rows = mysqli_fetch_array($user_get_exec, MYSQLI_ASSOC)) {
-		?>
-				<tr>
-				<td><?php echo $user_show_rows['id'];?></td>
-				<td><?php echo $user_show_rows['event_desc'];?></td>
-				<td><?php echo $user_show_rows['event_date'];?></td>
-				<td><?php echo "<a href='index.php?event_id=".$user_show_rows['id']."'> EDIT/DELETE</a>";?></td>
-				</tr>
-				<?php
-			}
+			<tr>
+			<th>ID</th>
+			<th>EVENT</th>
+			<th>DATE</th>
+			<th>EDIT/DELETE</th>
+			</tr>
+			<?php
+				$user_get_sql = "SELECT * FROM `events` ORDER BY id DESC LIMIT 15";
+				$user_get_exec = mysqli_query($conn, $user_get_sql);
+				while($user_show_rows = mysqli_fetch_array($user_get_exec, MYSQLI_ASSOC)) {
+			?>
+					<tr>
+					<td><?php echo $user_show_rows['id'];?></td>
+					<td><?php echo $user_show_rows['event_desc'];?></td>
+					<td><?php echo $user_show_rows['event_date'];?></td>
+					<td><?php echo "<a href='index.php?event_id=".$user_show_rows['id']."'> EDIT/DELETE</a>";?></td>
+					</tr>
+					<?php
+				}
+		?> </table> <?php
 	}
 ?>
