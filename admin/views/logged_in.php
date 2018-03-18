@@ -6,7 +6,6 @@
 	$username = $_SESSION['username'];
 	echo $username;
 ?>
-<br>
 <a href="index.php?logout">Logout</a>
 <?php
 	#SEGMENT TO ADD NEW USERS
@@ -16,6 +15,7 @@
 	$check_result = $check_root->fetch_object();
 	if($check_result->class == "root") {
 		?>
+		<br>
 		<br><br>
 		<h1>ADD / DELETE USERS</h1>
 		<table>
@@ -39,7 +39,6 @@
 			echo "</table><a href='register.php?authorised'>Add new user</a>";
 	}
 ?>
-<br><br>
 <?php
 	#SEGMENT TO ADD/EDIT/DELETE NEW ARTICLES
 	#ACCESSIBLE TO ONLY THOSE USERS WITH A CLASS OF ROOT/ EDITOR
@@ -133,6 +132,7 @@
 			}
 		}
 		?>
+		<br><br>
 		<h1>ADD / DELETE/ EDIT ARTICLES</h1>
 		<form method="post" action="" enctype="multipart/form-data">
 		<label>Article Title: </label>
@@ -186,7 +186,6 @@
 			}
 	}
 ?>
-<br><br>
 <?php
 	#SEGMENT TO ADD/EDIT/DELETE NEW PHOTOGRAPHS
 	#ACCESSIBLE TO ONLY THOSE USERS WITH A CLASS OF ROOT/ PHOTOGRAPHER
@@ -194,7 +193,7 @@
 	$check_edit = mysqli_query($conn,$sql_edit);
 	$check_edit = $check_edit->fetch_object();
 	if($check_edit->class == "root" || $check_edit->class == "photographer") {
-		$titleval = $photographer_name_val = $photographer_class_val = $date_added_val = $image_val =  "";
+		$photographer_name_val = $photographer_class_val = $date_added_val = $image_val =  "";
 		$btn_val = "Add Image";
 		$btn_name = "image_submit";
 		if (isset($_GET["image_id"])) {
@@ -202,7 +201,6 @@
 			$getfordel = "SELECT * FROM images WHERE id = '$idval'";
 			$queryfordel = mysqli_query($conn, $getfordel);
 			$showfordel = mysqli_fetch_array($queryfordel, MYSQLI_ASSOC);
-			$titleval = $showforedit["image_title"];
 			$photographer_name_val = $showforedit["photographer_name"];
 			$photographer_class_val = $showforedit["photographer_class"];
 			$date_added_val = $showforedit["date_added"];
@@ -212,13 +210,12 @@
 		}
 		if(isset($_POST['image_submit']) && $_FILES["file_upload"]["error"] == 0) {
 			$file_to_upload = $_FILES["file_upload"];
-			$title = mysqli_real_escape_string($conn, $_POST['title']);
 			$photographer_name = mysqli_real_escape_string($conn, $_POST['photographer_name']);
 			$photographer_class = mysqli_real_escape_string($conn, $_POST['photographer_class']);
 			$date_added = mysqli_real_escape_string($conn, $_POST['date_added']);
 			$file_name = mysqli_real_escape_string($conn, $file_to_upload["name"]);
 			$sql_add_image = "INSERT INTO
-			images(image_title, photographer_name, photographer_class, date_added, image_path) VALUES ('".$title."','".$photographer_name."','".$photographer_class."','".$date_added."','".$file_name."');";
+			images(photographer_name, photographer_class, date_added, image_path) VALUES ('".$photographer_name."','".$photographer_class."','".$date_added."','".$file_name."');";
 			$query_add_image = mysqli_query($conn, $sql_add_image);
 			if($query_add_image) {
 				echo "Image added to database, moving image file.";
@@ -254,10 +251,9 @@
 			}
 		}
 		?>
+		<br><br>
 		<h1>ADD / DELETE PHOTOGRAPHS</h1>
 		<form method="post" action="" enctype="multipart/form-data">
-		<label>Photograph Title: </label>
-		<input type="text" name="title" <?php echo "value = '$titleval'"; ?>><br>
 		<label>Photographer Name: </label>
 		<input type="text" name="photographer_name" <?php echo "value = '$photographer_name_val'"; ?> required><br>
 		<label>Photographer Class: </label>
@@ -268,18 +264,16 @@
 		<?php if (isset($_GET["image_id"])){ ?>
 			<input type="text" name="file_upload" <?php echo "value = '$image_val'"; ?>><br>
 		<?php } else { ?>
-			<input type="file" name="file_upload"><br>
+			<input type="file" name="file_upload" required><br>
 		<?php } ?>
 		<input type="submit" <?php echo "value = '$btn_val' name='$btn_name'"; ?>><br>
 		</form>
 		<table>
 		<tr>
 		<th>ID</th>
-		<th>TITLE</th>
 		<th>PHOTOGRAPHER</th>
 		<th>PHOTOGRAPHER CLASS</th>
 		<th>DATE ADDED</th>
-		<th>SECTION</th>
 		<th>IMAGE PATH</th>
 		<th>EDIT/DELETE</th>
 		</tr>
@@ -290,12 +284,172 @@
 		?>
 				<tr>
 				<td><?php echo $user_show_rows['id'];?></td>
-				<td><?php echo $user_show_rows['image_title'];?></td>
 				<td><?php echo $user_show_rows['photographer_name'];?></td>
 				<td><?php echo $user_show_rows['photographer_class'];?></td>
 				<td><?php echo $user_show_rows['date_added'];?></td>
 				<td><?php echo $user_show_rows['image_path'];?></td>
 				<td><?php echo "<a href='index.php?image_id=".$user_show_rows['id']."'> EDIT/DELETE</a>";?></td>
+				</tr>
+				<?php
+			}
+	}
+?>
+<?php
+	#SEGMENT TO ADD/EDIT/DELETE NEW ANNOUNCEMENTS
+	#ACCESSIBLE TO ONLY THOSE USERS WITH A CLASS OF ROOT/ EDITOR
+	$sql_edit = "SELECT class FROM users WHERE username = '" . $username . "';";
+	$check_edit = mysqli_query($conn,$sql_edit);
+	$check_edit = $check_edit->fetch_object();
+	if($check_edit->class == "root" || $check_edit->class == "editor") {
+		$announcement_val = "";
+		$btn_val = "Add Announcement";
+		$btn_name = "announcement_submit";
+		if (isset($_GET["announcement_id"])) {
+			$idval = $_GET["announcement_id"];
+			$getforedit = "SELECT * FROM announcements WHERE id = '$idval'";
+			$queryforedit = mysqli_query($conn, $getforedit);
+			$showforedit = mysqli_fetch_array($queryforedit, MYSQLI_ASSOC);
+			$announcement_val = $showforedit["announcement"];
+			$btn_val = "Edit announcement";
+			$btn_name = "announcement_edit";
+		}
+		if(isset($_POST['announcement_submit'])) {
+			$announcement = mysqli_real_escape_string($conn, $_POST['announcement']);
+			$sql_add_announcement = "INSERT INTO announcements(announcement) VALUES ('".$announcement."');";
+			$query_add_announcement = mysqli_query($conn, $sql_add_announcement);
+			if($query_add_announcement) {
+				echo "Announcement added to database.";
+			} else {
+				echo "Unable to upload announcement";
+			}
+		} elseif(isset($_POST['announcement_edit'])) {
+			$announcement = mysqli_real_escape_string($conn, $_POST['announcement']);
+			$sql_edit_announcement = "UPDATE announcements SET announcement = '$announcement' WHERE id = '$idval';";
+			$query_edit_announcement = mysqli_query($conn, $sql_edit_announcement);
+			if($query_edit_announcement) {
+				echo "Announcement Edited";
+			} else {
+				echo "Unable to edit announcement";
+			}
+		} elseif(isset($_POST['announcement_delete'])) {
+			$sql_del_announcement = "DELETE FROM announcements WHERE id = '$idval';";
+			$query_del_announcement = mysqli_query($conn, $sql_del_announcement);
+			if($query_del_announcement) {
+				echo "Announcement Edited";
+			} else {
+				echo "Unable to edit announcement";
+			}
+		}
+		?>
+		<br><br>
+		<h1>ADD / DELETE/ EDIT ANNOUNCEMENTS</h1>
+		<form method="post" action="">
+		<label>Announcement: </label>
+		<input type="text" name="announcement" <?php echo "value = '$announcement_val'"; ?> required><br>
+		<?php if (isset($_GET["announcement_id"])){ ?>
+			<input type="submit" value="Delete Announcement" name="announcement_delete">
+		<?php } ?>
+		<input type="submit" <?php echo "value = '$btn_val' name='$btn_name'"; ?>><br>
+		</form>
+		<table>
+		<tr>
+		<th>ID</th>
+		<th>ANNOUNCEMENT</th>
+		<th>EDIT/DELETE</th>
+		</tr>
+		<?php
+			$user_get_sql = "SELECT * FROM `announcements` ORDER BY id DESC LIMIT 15";
+			$user_get_exec = mysqli_query($conn, $user_get_sql);
+			while($user_show_rows = mysqli_fetch_array($user_get_exec, MYSQLI_ASSOC)) {
+		?>
+				<tr>
+				<td><?php echo $user_show_rows['id'];?></td>
+				<td><?php echo $user_show_rows['announcement'];?></td>
+				<td><?php echo "<a href='index.php?announcement_id=".$user_show_rows['id']."'> EDIT/DELETE</a>";?></td>
+				</tr>
+				<?php
+			}
+	}
+?>
+<?php
+	#SEGMENT TO ADD/EDIT/DELETE NEW UPCOMING EVENTS
+	#ACCESSIBLE TO ONLY THOSE USERS WITH A CLASS OF ROOT/ EDITOR
+	$sql_edit = "SELECT class FROM users WHERE username = '" . $username . "';";
+	$check_edit = mysqli_query($conn,$sql_edit);
+	$check_edit = $check_edit->fetch_object();
+	if($check_edit->class == "root" || $check_edit->class == "editor") {
+		$event_val = $date_val = "";
+		$btn_val = "Add Event";
+		$btn_name = "event_submit";
+		if (isset($_GET["event_id"])) {
+			$idval = $_GET["event_id"];
+			$getforedit = "SELECT * FROM events WHERE id = '$idval'";
+			$queryforedit = mysqli_query($conn, $getforedit);
+			$showforedit = mysqli_fetch_array($queryforedit, MYSQLI_ASSOC);
+			$event_val = $showforedit["event"];
+			$date_val = $showforedit["date"];
+			$btn_val = "Edit event";
+			$btn_name = "event_edit";
+		}
+		if(isset($_POST['event_submit'])) {
+			$event_desc = mysqli_real_escape_string($conn, $_POST['event_desc']);
+			$event_date = mysqli_real_escape_string($conn, $_POST['event_date']);
+			$sql_add_event = "INSERT INTO events(event_desc, event_date) VALUES ('".$event_desc."','".$event_date."');";
+			$query_add_event = mysqli_query($conn, $sql_add_event);
+			if($query_add_event) {
+				echo "Event added to database.";
+			} else {
+				echo "Unable to upload event";
+			}
+		} elseif(isset($_POST['event_edit'])) {
+			$event_desc = mysqli_real_escape_string($conn, $_POST['event_desc']);
+			$event_date = mysqli_real_escape_string($conn, $_POST['event_date']);
+			$sql_edit_event = "UPDATE events SET event_desc = '$event_desc',event_date = '$event_date' WHERE id = '$idval';";
+			$query_edit_event = mysqli_query($conn, $sql_edit_event);
+			if($query_edit_event) {
+				echo "Event Edited";
+			} else {
+				echo "Unable to edit event";
+			}
+		} elseif(isset($_POST['event_delete'])) {
+			$sql_del_event = "DELETE FROM events WHERE id = '$idval';";
+			$query_del_event = mysqli_query($conn, $sql_del_event);
+			if($query_del_event) {
+				echo "Event Edited";
+			} else {
+				echo "Unable to edit event";
+			}
+		}
+		?>
+		<br><br>
+		<h1>ADD / DELETE/ EDIT EVENTS</h1>
+		<form method="post" action="">
+		<label>Event Description: </label>
+		<input type="text" name="event_desc" <?php echo "value = '$event_val'"; ?> required><br>
+		<label>Date: </label>
+		<input type="text" name="event_date" <?php echo "value = '$date_val'"; ?> required><br>
+		<?php if (isset($_GET["event_id"])){ ?>
+			<input type="submit" value="Delete Event" name="event_delete">
+		<?php } ?>
+		<input type="submit" <?php echo "value = '$btn_val' name='$btn_name'"; ?>><br>
+		</form>
+		<table>
+		<tr>
+		<th>ID</th>
+		<th>EVENT</th>
+		<th>DATE</th>
+		<th>EDIT/DELETE</th>
+		</tr>
+		<?php
+			$user_get_sql = "SELECT * FROM `events` ORDER BY id DESC LIMIT 15";
+			$user_get_exec = mysqli_query($conn, $user_get_sql);
+			while($user_show_rows = mysqli_fetch_array($user_get_exec, MYSQLI_ASSOC)) {
+		?>
+				<tr>
+				<td><?php echo $user_show_rows['id'];?></td>
+				<td><?php echo $user_show_rows['event_desc'];?></td>
+				<td><?php echo $user_show_rows['event_date'];?></td>
+				<td><?php echo "<a href='index.php?event_id=".$user_show_rows['id']."'> EDIT/DELETE</a>";?></td>
 				</tr>
 				<?php
 			}
