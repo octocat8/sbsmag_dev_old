@@ -1,4 +1,4 @@
-<?php 
+<?php
 	if(isset($login)) {
 		if($login->errors) {
 			foreach ($login->errors as $error) {
@@ -20,4 +20,3 @@
 	<input type="password" name="password" autocomplete="off" required><br>
 	<input type="submit" name="login" value="Log In">
 </form>
-<a href="register.php"> Register new acc</a>
