@@ -105,7 +105,7 @@
 					$btn_val = "Edit Article";
 					$btn_name = "article_edit";
 				}
-				if(isset($_POST['article_submit']) && $_FILES["file_upload"]["error"] == 0) {
+				if(isset($_POST['article_submit'])) {
 					$file_to_upload = $_FILES["file_upload"];
 					$title = mysqli_real_escape_string($conn, $_POST['title']);
 					$auth_name = mysqli_real_escape_string($conn, $_POST['auth_name']);
