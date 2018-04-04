@@ -22,9 +22,9 @@ if (!$conn) {
             <a href="section.php?section=news" id="news" class="nav-item">News</a>
             <a href="section.php?section=science" id="sci"  class="nav-item">Science</a>
             <a href="section.php?section=features" id="feat" class="nav-item">Features</a>
-            <a href="section.php?section=lifestyle" id="life" class="nav-item">Lifestyle</a>
+            <a href="section.php?section=sbs_life" id="life" class="nav-item">SBS Life</a>
             <a href="section.php?section=sports" id="spo"  class="nav-item">Sports</a>
-            <a href="section.php?section=society" id="soc"  class="nav-item">Society</a>
+            <a href="section.php?section=poetry" id="poe"  class="nav-item">Poetry</a>
             <a href="section.php?section=business" id="busi" class="nav-item">Business</a>
             <a href="gallery.php" class="nav-item">Gallery</a>
             <script>
@@ -54,11 +54,19 @@ if (!$conn) {
             <?php
               $article_sql = "SELECT * FROM articles ORDER BY id DESC LIMIT 18";
               $article_exec = mysqli_query($conn, $article_sql);
-              while ($row = mysqli_fetch_array($article_exec, MYSQLI_ASSOC)) { ?>
-                <a <?php echo "href = 'article.php?article_id=".$row['id']."'"; ?> class="article">
-                    <p class="title"><?php echo $row['article_title']; ?></p>
-                </a>
-              <?php } ?>
+              	while ($row = mysqli_fetch_array($article_exec, MYSQLI_ASSOC)) { 
+			if($row['image_path'] != "") {
+	    ?>
+                		<a <?php echo "href = 'article.php?article_id=".$row['id']."' style='background-image: url(uploads/".$row['image_path'].");'"; ?> class="article">
+                    			<p class="title"><?php echo $row['article_title']; ?></p>
+                		</a>
+			<?php } else { ?>
+				<a <?php echo "href = 'article.php?article_id=".$row['id']."'"; ?> class="article">
+                    			<p class="title"><?php echo $row['article_title']; ?></p>
+                		</a>
+
+	        	<?php } ?>
+	        <?php } ?>
             <script>
                 function random_number(lower,upper) {
                     return Math.floor(Math.random() * (upper-lower) + lower);
