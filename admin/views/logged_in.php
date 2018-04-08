@@ -436,8 +436,8 @@
 					$getforedit = "SELECT * FROM events WHERE id = '$idval'";
 					$queryforedit = mysqli_query($conn, $getforedit);
 					$showforedit = mysqli_fetch_array($queryforedit, MYSQLI_ASSOC);
-					$event_val = $showforedit["event"];
-					$date_val = $showforedit["date"];
+					$event_val = $showforedit["event_desc"];
+					$date_val = $showforedit["event_date"];
 					$btn_val = "Edit event";
 					$btn_name = "event_edit";
 				}
