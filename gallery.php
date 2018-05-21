@@ -55,10 +55,10 @@ if (!$conn) {
                 $img_sql = "SELECT * FROM images ORDER BY id DESC LIMIT 30";
                 $img_exec = mysqli_query($conn, $img_sql);
                 while ($row = mysqli_fetch_array($img_exec, MYSQLI_ASSOC)) { ?>
-                    <div class="item">
+                    <a href="" class="item">
                         <img <?php echo "src='uploads/".$row['image_path']."'"; ?>alt="">
-                        <div class="item__overlay"><p>VIEW</p></div>
-                    </div>
+                        <!-- <div class="item__overlay"><p>VIEW</p></div> -->
+                    </a>
                 <?php } ?>
             <script>
                 var colors = ["#A0011D", "#ED5222","#FFB21C", "#FFFD5A"];
