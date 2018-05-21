@@ -19,13 +19,20 @@ if (!$conn) {
             <a id="close" class="nav-top">
                 <i class="far fa-times-circle"></i>
             </a>
-            <a href="section.php?section=news" id="news" class="nav-item">News</a>
+            <!-- <a href="section.php?section=news" id="news" class="nav-item">News</a>
             <a href="section.php?section=science" id="sci"  class="nav-item">Science</a>
             <a href="section.php?section=features" id="feat" class="nav-item">Features</a>
             <a href="section.php?section=sbs_life" id="life" class="nav-item">SBS Life</a>
             <a href="section.php?section=sports" id="spo"  class="nav-item">Sports</a>
             <a href="section.php?section=poetry" id="poe"  class="nav-item">Poetry</a>
-            <a href="section.php?section=business" id="busi" class="nav-item">Business</a>
+            <a href="section.php?section=business" id="busi" class="nav-item">Business</a> -->
+            <a href="#" id="news" class="nav-item">News</a>
+            <a href="#" id="sci"  class="nav-item">Science</a>
+            <a href="#" id="feat" class="nav-item">Features</a>
+            <a href="#" id="life" class="nav-item">SBS Life</a>
+            <a href="#" id="spo"  class="nav-item">Sports</a>
+            <a href="#" id="poe"  class="nav-item">Poetry</a>
+            <a href="#" id="busi" class="nav-item">Business</a>
             <a href="gallery.php" class="nav-item">Gallery</a>
             <script>
                 var close_btn = document.getElementById("close");
@@ -77,17 +84,22 @@ if (!$conn) {
                 }
                 var articles = document.getElementsByClassName("article");
                 for(var i = 0; i < articles.length; i++) {
-                    articles[i].className = "article h"+random_number(2,4)+" w"+random_number(2,4);
-                    // if (articles[i].id === "noimg") {
-                    //   articles[i].style.background = colors[random_number(0,2)];
-                    // }
+                    var square = random_number(2,4);
+                    articles[i].className = "article h"+square+" w"+square;
+
                 }
                 var art_container = document.getElementById("main");
                 function generate_filler() {
-                    for(var j = 0; j < articles.length; j++) {
+                  if (articles.length <= 15) {
+                    limit = 15;
+                  } else {
+                    limit = articles.length;
+                  }
+                    for(var j = 0; j < limit; j++) {
                       // var colors = array("rgb(180,15,20)", "rgb(249,140,45)","rgb(255,236,179)","rgb(238,80,235)");
                         var fill = document.createElement("div");
                         fill.className = "filler";
+                        // fill.style.background = "rgb("+random_number(0,255)+","+random_number(0,255)+","+random_number(0,255)+")";
                         fill.style.background = colors[random_number(0,4)];
                         art_container.appendChild(fill);
                     }
@@ -100,7 +112,7 @@ if (!$conn) {
             <div class="announcements">
                 <h1>Announcements</h1>
                 <?php
-                  $announcement_sql = "SELECT * FROM announcements ORDER BY id DESC LIMIT 5";
+                  $announcement_sql = "SELECT * FROM announcements LIMIT 5";
                   $announcement_exec = mysqli_query($conn, $announcement_sql);
                   while ($row2 = mysqli_fetch_array($announcement_exec, MYSQLI_ASSOC)) { ?>
                         <p><?php echo $row2['announcement']; ?></p>
@@ -109,7 +121,7 @@ if (!$conn) {
             <div class="events">
                 <h1>Upcoming Events</h1>
                 <?php
-                  $event_sql = "SELECT * FROM events ORDER BY id DESC LIMIT 5";
+                  $event_sql = "SELECT * FROM events LIMIT 5";
                   $event_exec = mysqli_query($conn, $event_sql);?>
                 <div class="events-main">
                     <?php while ($row3 = mysqli_fetch_array($event_exec, MYSQLI_ASSOC)) { ?>

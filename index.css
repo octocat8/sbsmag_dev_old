@@ -104,10 +104,10 @@ a {
             align-items: center;
 }
 #noimg {
-  background-color: #A0011D;
+  background-color: #333;
 }
 .filler {
-    background: var(--surya);
+    background: #777;
 }
 .article.h2 {
     grid-row: span 2;
@@ -139,7 +139,7 @@ a {
 }
 
 .article .title {
-  color: #fff;
+  color: #eee;
   background-color: #00000032;
   padding: 5px;
   width: auto;

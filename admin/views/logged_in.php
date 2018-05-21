@@ -275,7 +275,7 @@
 								if($file_size < 10000000) {
 									if(move_uploaded_file($file_to_upload["tmp_name"], SITE_ROOT.$target_dir.$file_to_upload["name"])) {
 										echo "File Successfully Moved. Congratulations.";
-										header("index.php");
+										// header("index.php");
 									} else {
 										echo "Failure to move file. ";
 									}

@@ -1,10 +1,17 @@
+<?php
+require_once ("admin/config/db.php");
+$conn = new mysqli(DB_HOST,DB_USER,DB_PASS,DB_NAME);
+if (!$conn) {
+  echo "Cannot lock onto server :(";
+}
+?>
 <!doctype html>
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>SBSMAG | Section</title>
+        <title>SBSMAG | Gallery</title>
         <link href="gallery.css" rel="stylesheet" type="text/css">
-        <link href="https://fonts.googleapis.com/css?family=Lato:400,900" rel="stylesheet"> 
+        <link href="https://fonts.googleapis.com/css?family=Lato:400,900" rel="stylesheet">
         <script defer src="Assets/fontawesome-all.js"></script>
     </head>
     <body>
@@ -29,7 +36,7 @@
             </script>
         </div>
         <div class="header">
-            <a href="index.html">
+            <a href="index.php">
                 <img src="Assets/sbsmaglogo2.jpg">
             </a>
         </div>
@@ -44,71 +51,17 @@
                     document.getElementById("navbar").style.display = "grid";
                 }
             </script>
-            <div class="item">
-                <img src="Assets/samples/alberto-restifo-4510-unsplash.jpg" alt="">
-                <div class="item__overlay"><p>View</p></div>
-            </div>
-            <div class="item">
-                <img src="Assets/samples/ales-krivec-2050-unsplash.jpg" alt="">
-                <div class="item__overlay"><p>View</p></div>
-            </div>
-            <div class="item">
-                <img src="Assets/samples/anders-jilden-41692-unsplash.jpg" alt="">
-                <div class="item__overlay"><p>View</p></div>
-            </div>
-            <div class="item">
-                <img src="Assets/samples/cosmic-timetraveler-33673-unsplash.jpg" alt="">
-                <div class="item__overlay"><p>View</p></div>
-            </div>
-            <div class="item">
-                <img src="Assets/samples/jonatan-pie-234237-unsplash.jpg" alt="">
-                <div class="item__overlay"><p>View</p></div>
-            </div>
-            <div class="item">
-                <img src="Assets/samples/jonatan-pie-234237-unsplash.jpg" alt="">
-                <div class="item__overlay"><p>View</p></div>
-            </div>
-            <div class="item">
-                <img src="Assets/samples/patrick-lindenberg-191841-unsplash.jpg" alt="">
-                <div class="item__overlay"><p>View</p></div>
-            </div>
-            <div class="item">
-                <img src="Assets/samples/preston-pownell-16950-unsplash.jpg" alt="">
-                <div class="item__overlay"><p>View</p></div>
-            </div>
-            <div class="item">
-                <img src="Assets/samples/alberto-restifo-4510-unsplash.jpg" alt="">
-                <div class="item__overlay"><p>View</p></div>
-            </div>
-            <div class="item">
-                <img src="Assets/samples/ales-krivec-2050-unsplash.jpg" alt="">
-                <div class="item__overlay"><p>View</p></div>
-            </div>
-            <div class="item">
-                <img src="Assets/samples/anders-jilden-41692-unsplash.jpg" alt="">
-                <div class="item__overlay"><p>View</p></div>
-            </div>
-            <div class="item">
-                <img src="Assets/samples/cosmic-timetraveler-33673-unsplash.jpg" alt="">
-                <div class="item__overlay"><p>View</p></div>
-            </div>
-            <div class="item">
-                <img src="Assets/samples/jonatan-pie-234237-unsplash.jpg" alt="">
-                <div class="item__overlay"><p>View</p></div>
-            </div>
-            <div class="item">
-                <img src="Assets/samples/jonatan-pie-234237-unsplash.jpg" alt="">
-                <div class="item__overlay"><p>View</p></div>
-            </div>
-            <div class="item">
-                <img src="Assets/samples/patrick-lindenberg-191841-unsplash.jpg" alt="">
-                <div class="item__overlay"><p>View</p></div>
-            </div>
-            <div class="item">
-                <img src="Assets/samples/preston-pownell-16950-unsplash.jpg" alt="">
-                <div class="item__overlay"><p>View</p></div>
-            </div>
+            <?php
+                $img_sql = "SELECT * FROM images ORDER BY id DESC LIMIT 30";
+                $img_exec = mysqli_query($conn, $img_sql);
+                while ($row = mysqli_fetch_array($img_exec, MYSQLI_ASSOC)) { ?>
+                    <div class="item">
+                        <img <?php echo "src='uploads/".$row['image_path']."'"; ?>alt="">
+                        <div class="item__overlay"><p>VIEW</p></div>
+                    </div>
+                <?php } ?>
             <script>
+                var colors = ["#A0011D", "#ED5222","#FFB21C", "#FFFD5A"];
                 function random_number(lower,upper) {
                     return Math.floor(Math.random() * (upper-lower) + lower);
                 }
@@ -118,10 +71,17 @@
                 }
                 var art_container = document.getElementById("main");
                 function generate_filler() {
-                    for(var j = 0; j < items.length; j++) {
+                  if (items.length <= 15) {
+                    limit = 15;
+                  } else {
+                    limit = items.length;
+                  }
+                    for(var j = 0; j < limit; j++) {
+                      // var colors = array("rgb(180,15,20)", "rgb(249,140,45)","rgb(255,236,179)","rgb(238,80,235)");
                         var fill = document.createElement("div");
                         fill.className = "filler";
-                        fill.style.background = "rgb("+random_number(0,255)+","+random_number(0,255)+","+random_number(0,255)+")";
+                        // fill.style.background = "rgb("+random_number(0,255)+","+random_number(0,255)+","+random_number(0,255)+")";
+                        fill.style.background = colors[random_number(0,4)];
                         art_container.appendChild(fill);
                     }
                 }
