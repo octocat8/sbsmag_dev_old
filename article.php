@@ -57,11 +57,16 @@ if (!$conn) {
                 $article_sql = "SELECT * FROM articles WHERE id = '$id' LIMIT 1";
                 $article_exec = mysqli_query($conn, $article_sql);
                 $row = mysqli_fetch_array($article_exec, MYSQLI_ASSOC);
-              }
-            ?>
-            <?php echo "<a id='section' href='section.php?section=".$row['section']."'>".$row['section']."</a>"; ?>
-            <h1><?php echo $row['article_title']; ?></h1>
-            <h3><?php echo $row['author_name']; ?><br><?php echo $row['author_class']; ?><br><?php echo $row['date_added']; ?></h3>
+		if($row['image_path'] != "") {
+			echo "<style>#preview {background: url('uploads/".$row["image_path"]."'); color: #fff;} #heading {background-color: #333333bb; padding: 20px; max-width: 60vw;} #heading a{color: #fff;}</style>";
+		} else {
+			echo "<style>#preview {background: var(--surya) ; color: #000; max-height: 50vh;} #heading {color: #000; max-width: 100vw;}</style>";
+		} }?>
+		<div id="heading" >
+            		<?php echo "<a id='section' href='section.php?section=".$row['section']."'>".$row['section']."</a>"; ?>
+            		<h1><?php echo $row['article_title']; ?></h1>
+            		<h3><?php echo $row['author_name']; ?><br><?php echo $row['author_class']; ?><br><?php echo $row['date_added']; ?></h3>
+		</div>
         </div>
         <!-- content -->
         <div class="content">

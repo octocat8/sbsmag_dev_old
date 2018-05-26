@@ -40,6 +40,10 @@ if (!$conn) {
                 <img src="Assets/sbsmaglogo2.jpg">
             </a>
         </div>
+	<div id="overlay">
+        	<button>Close</button>
+		<img src="">
+	</div>
         <div id="main">
             <a href="#navbar" id="open">
                 <i class="fas fa-bars"></i>
@@ -55,12 +59,29 @@ if (!$conn) {
                 $img_sql = "SELECT * FROM images ORDER BY id DESC LIMIT 30";
                 $img_exec = mysqli_query($conn, $img_sql);
                 while ($row = mysqli_fetch_array($img_exec, MYSQLI_ASSOC)) { ?>
-                    <a href="" class="item">
+                    <div  class="item">
                         <img <?php echo "src='uploads/".$row['image_path']."'"; ?>alt="">
                         <!-- <div class="item__overlay"><p>VIEW</p></div> -->
-                    </a>
+                    </div>
                 <?php } ?>
+		<script>
+			var overlay = document.getElementById("overlay");	
+      			var overlayImage = overlay.querySelector("img");
+      			var overlayClose = overlay.querySelector("button");
+      			const images = document.querySelectorAll('.item');
+      			function handleClick(e) {
+        			const photo = e.currentTarget.querySelector("img").src;
+        			overlayImage.src = photo;
+				overlay.style.display = "grid"
+      			}
+      			function close() {
+        			overlay.style.display = "none";
+      			}
+      			images.forEach(image => image.addEventListener('click', handleClick ));
+      			overlayClose.addEventListener("click", close);
+		</script>
             <script>
+                // Generation of Filler
                 var colors = ["#A0011D", "#ED5222","#FFB21C", "#FFFD5A"];
                 function random_number(lower,upper) {
                     return Math.floor(Math.random() * (upper-lower) + lower);
@@ -68,6 +89,7 @@ if (!$conn) {
                 var items = document.getElementsByClassName("item");
                 for(var i = 0; i < items.length; i++) {
                     items[i].className = "item h"+random_number(2,4)+" w"+random_number(2,4);
+                    items[i].addEventListener('click', handleClick);
                 }
                 var art_container = document.getElementById("main");
                 function generate_filler() {

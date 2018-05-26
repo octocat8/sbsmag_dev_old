@@ -132,7 +132,7 @@ if (!$conn) {
             </div>
             <div class="about">
                 <h1>About Us</h1>
-                <p>This is where the description of the SBSMag will go.</p>
+		<p>The SBSMAG acts as a mirror that reflects the students points of view. It acts as a medium for our students to express their opinions on various issues ranging from those pertaining to global security to thosethat affect keep relevance in our daily lives. </p>
             </div>
         </div>
         <footer>

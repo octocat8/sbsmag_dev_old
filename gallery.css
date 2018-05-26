@@ -75,6 +75,17 @@ a {
 .header img {
     height: 11vh;
 }
+/* Overlay */
+#overlay {
+  height: 100vh;
+  width: 100vw;
+  position: fixed;
+  z-index: 20;
+  background-color: #333333aa;
+  justify-items: center;
+  align-items: center;
+  display:none;
+}
 /* Main images */
 #main {
     display: -ms-grid;
