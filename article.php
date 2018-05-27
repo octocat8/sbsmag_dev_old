@@ -18,13 +18,21 @@ if (!$conn) {
           <a id="close" class="nav-top">
               <i class="far fa-times-circle"></i>
           </a>
-          <a href="section.php?section=news" id="news" class="nav-item">News</a>
+          <!-- <a href="section.php?section=news" id="news" class="nav-item">News</a>
           <a href="section.php?section=science" id="sci"  class="nav-item">Science</a>
           <a href="section.php?section=features" id="feat" class="nav-item">Features</a>
           <a href="section.php?section=sbs_life" id="life" class="nav-item">SBS Life</a>
           <a href="section.php?section=sports" id="spo"  class="nav-item">Sports</a>
           <a href="section.php?section=poetry" id="poe"  class="nav-item">Poetry</a>
           <a href="section.php?section=business" id="busi" class="nav-item">Business</a>
+          <a href="gallery.php" class="nav-item">Gallery</a> -->
+          <a href="#" id="news" class="nav-item">News</a>
+          <a href="#" id="sci"  class="nav-item">Science</a>
+          <a href="#" id="feat" class="nav-item">Features</a>
+          <a href="#" id="life" class="nav-item">SBS Life</a>
+          <a href="#" id="spo"  class="nav-item">Sports</a>
+          <a href="#" id="poe"  class="nav-item">Poetry</a>
+          <a href="#" id="busi" class="nav-item">Business</a>
           <a href="gallery.php" class="nav-item">Gallery</a>
           <script>
               var close_btn = document.getElementById("close");
@@ -58,12 +66,15 @@ if (!$conn) {
                 $article_exec = mysqli_query($conn, $article_sql);
                 $row = mysqli_fetch_array($article_exec, MYSQLI_ASSOC);
 		if($row['image_path'] != "") {
-			echo "<style>#preview {background: url('uploads/".$row["image_path"]."'); color: #fff;} #heading {background-color: #333333bb; padding: 20px; max-width: 60vw;} #heading a{color: #fff;}</style>";
+			echo "<style>#preview {background: url('uploads/".$row["image_path"]."'); color: #fff; max-height: 100vh;} #heading {background-color: #333333bb; padding: 20px; max-width: 60vw;} #heading a{color: #fff;}</style>";
 		} else {
-			echo "<style>#preview {background: var(--surya) ; color: #000; max-height: 50vh;} #heading {color: #000; max-width: 100vw;}</style>";
+			echo "<style>#preview {padding: 10px 20px; background:none; color: #000;} #heading {color: #000; max-width: 100vw;}</style>";
 		} }?>
 		<div id="heading" >
-            		<?php echo "<a id='section' href='section.php?section=".$row['section']."'>".$row['section']."</a>"; ?>
+            		<?php
+                  //echo "<a id='section' href='section.php?section=".$row['section']."'>".$row['section']."</a>";
+                  echo "<a id='section' href='#'>".$row['section']."</a>";
+                ?>
             		<h1><?php echo $row['article_title']; ?></h1>
             		<h3><?php echo $row['author_name']; ?><br><?php echo $row['author_class']; ?><br><?php echo $row['date_added']; ?></h3>
 		</div>

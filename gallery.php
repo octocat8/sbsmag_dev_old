@@ -41,7 +41,7 @@ if (!$conn) {
             </a>
         </div>
 	<div id="overlay">
-        	<button>Close</button>
+        	<button>Close <i class="fa fa-times"></i></button>
 		<img src="">
 	</div>
         <div id="main">
@@ -65,7 +65,7 @@ if (!$conn) {
                     </div>
                 <?php } ?>
 		<script>
-			var overlay = document.getElementById("overlay");	
+			var overlay = document.getElementById("overlay");
       			var overlayImage = overlay.querySelector("img");
       			var overlayClose = overlay.querySelector("button");
       			const images = document.querySelectorAll('.item');

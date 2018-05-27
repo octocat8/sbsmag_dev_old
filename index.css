@@ -5,8 +5,10 @@
     padding: 0;
 }
 :root {
-    --bhanu: #b40f14;
-    --surya: #f98c2d;
+    --bhanu: #A0011D;
+    --surya: #FFB21C;
+    --tejas: #ED5222;
+    --bhaskar: #FFFD5A;
 }
 /* General CSS styles */
 body {
@@ -96,7 +98,7 @@ a {
         justify-content: space-around;
 }
 .article {
-    background-color: #A0011D;
+    background-color: #000;
     background-repeat: no-repeat;
     background-size: contain;
     background-position: center;
@@ -106,8 +108,15 @@ a {
         -ms-flex-align: center;
             align-items: center;
 }
-#noimg {
+/* #noimg {
+  background: none;
+  color: #000;
+  border-bottom: 1px solid black;
+  border-right: 1px solid black;
 }
+#noimg .container .title, #noimg .container .sub {
+  color: #000;
+} */
 .filler {
     background: #777;
 }
@@ -148,6 +157,7 @@ a {
   max-width: 75%;
   font-size: 14px;
 }
+#noimg { background-color: var(--bhanu);}
 #noimg .title {
   background: none;
 }
@@ -254,6 +264,7 @@ footer img {
         padding-left: 10px;
     }
     /* .announcements, .events, .about {padding: 0;} */
+    .about { grid-auto-rows: auto;}
 }
 
 @media all and (max-width: 420px) {

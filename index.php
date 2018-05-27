@@ -78,7 +78,7 @@ if (!$conn) {
 	        	<?php } ?>
 	        <?php } ?>
             <script>
-                var colors = ["#A0011D", "#ED5222","#FFB21C", "#FFFD5A"];
+                var colors = ["var(--bhanu)", "var(--bhaskar)","var(--surya)", "var(--tejas)"];
                 function random_number(lower,upper) {
                     return Math.floor(Math.random() * (upper-lower) + lower);
                 }

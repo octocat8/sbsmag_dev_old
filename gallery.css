@@ -5,8 +5,10 @@
     padding: 0;
 }
 :root {
-    --bhanu: #b40f14;
-    --surya: #f98c2d;
+    --bhanu: #A0011D;
+    --surya: #FFB21C;
+    --tejas: #ED5222;
+    --bhaskar: #FFFD5A;
 }
 /* General CSS styles */
 body {
@@ -86,11 +88,22 @@ a {
   align-items: center;
   display:none;
 }
+#overlay img {
+  align-self: baseline;
+  max-width: 100vw;
+  max-height: 100vh;
+}
+#overlay button {
+  align-self: end;
+  background: none;
+  color: #fff;
+  padding: 15px;
+}
 /* Main images */
 #main {
     display: -ms-grid;
     display: grid;
-    max-width: 100vw;
+    /* max-width: 100vw; */
     margin: 0 10px;
     grid-gap: 10px;
     -webkit-box-align: stretch;

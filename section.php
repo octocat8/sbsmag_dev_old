@@ -19,13 +19,21 @@ if (!$conn) {
           <a id="close" class="nav-top">
               <i class="far fa-times-circle"></i>
           </a>
-          <a href="section.php?section=news" id="news" class="nav-item">News</a>
+          <!-- <a href="section.php?section=news" id="news" class="nav-item">News</a>
           <a href="section.php?section=science" id="sci"  class="nav-item">Science</a>
           <a href="section.php?section=features" id="feat" class="nav-item">Features</a>
           <a href="section.php?section=sbs_life" id="life" class="nav-item">SBS Life</a>
           <a href="section.php?section=sports" id="spo"  class="nav-item">Sports</a>
           <a href="section.php?section=poetry" id="poe"  class="nav-item">Poetry</a>
           <a href="section.php?section=business" id="busi" class="nav-item">Business</a>
+          <a href="gallery.php" class="nav-item">Gallery</a> -->
+          <a href="#" id="news" class="nav-item">News</a>
+          <a href="#" id="sci"  class="nav-item">Science</a>
+          <a href="#" id="feat" class="nav-item">Features</a>
+          <a href="#" id="life" class="nav-item">SBS Life</a>
+          <a href="#" id="spo"  class="nav-item">Sports</a>
+          <a href="#" id="poe"  class="nav-item">Poetry</a>
+          <a href="#" id="busi" class="nav-item">Business</a>
           <a href="gallery.php" class="nav-item">Gallery</a>
           <script>
               var close_btn = document.getElementById("close");
