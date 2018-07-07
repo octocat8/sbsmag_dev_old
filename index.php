@@ -127,7 +127,7 @@ if (!$conn) {
                     <?php while ($row3 = mysqli_fetch_array($event_exec, MYSQLI_ASSOC)) { ?>
                       <p id="dates"><?php echo $row3['event_date']; ?></p>
                       <p><?php echo $row3['event_desc']; ?></p>
-                    <? } ?>
+                    <?php } ?>
                 </div>
             </div>
             <div class="about">
